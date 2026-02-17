@@ -85,7 +85,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         
         button:hover {
@@ -93,75 +93,97 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .categories {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 30px 0;
-        }
-        
-        .category-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .category-btn:hover, .category-btn.active {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            transform: translateY(-2px);
-        }
-        
-        .content-grid {
+        .results-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
         
-        .card {
-            background: rgba(255, 255, 255, 0.05);
+        .show-card {
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 15px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .card:hover {
+        .show-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.12);
         }
         
-        .card-img {
+        .show-image {
             width: 100%;
             height: 300px;
             object-fit: cover;
             display: block;
         }
         
-        .card-info {
+        .show-info {
             padding: 20px;
         }
         
-        .card-title {
+        .show-title {
             font-size: 1.3rem;
             margin-bottom: 10px;
+            color: #4ecdc4;
         }
         
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
+        .show-year {
+            font-size: 1rem;
             opacity: 0.8;
-            font-size: 0.9rem;
+            margin-bottom: 15px;
         }
         
-        .no-results {
+        .show-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .rating-stars {
+            color: #ffd700;
+        }
+        
+        .show-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .watch-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .watch-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .loading {
             text-align: center;
             padding: 50px;
-            grid-column: 1 / -1;
+            font-size: 1.5rem;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #ff6b6b;
+            font-size: 1.2rem;
         }
         
         @keyframes fadeIn {
@@ -177,10 +199,6 @@
             h1 {
                 font-size: 2rem;
             }
-            
-            .content-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
         }
     </style>
 </head>
@@ -188,103 +206,120 @@
     <div class="container">
         <header>
             <h1>ZéniaTV</h1>
-            <p class="subtitle">Streaming de Séries e Filmes</p>
+            <p class="subtitle">Assista a suas séries favoritas diretamente do seu navegador</p>
         </header>
         
         <div class="search-container">
             <div class="search-box">
-                <input type="text" placeholder="Buscar séries, filmes...">
-                <button>Pesquisar</button>
-            </div>
-            
-            <div class="categories">
-                <div class="category-btn active">Todas</div>
-                <div class="category-btn">Ação</div>
-                <div class="category-btn">Comédia</div>
-                <div class="category-btn">Drama</div>
-                <div class="category-btn">Ficção</div>
-                <div class="category-btn">Terror</div>
+                <input type="text" id="searchInput" placeholder="Procure por uma série...">
+                <button id="searchButton">Buscar</button>
             </div>
         </div>
         
-        <div class="content-grid">
-            <!-- Cards de conteúdo serão adicionados aqui dinamicamente -->
-            <div class="card">
-                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+1" alt="Série 1" class="card-img">
-                <div class="card-info">
-                    <h3 class="card-title">Série de Exemplo 1</h3>
-                    <div class="card-meta">
-                        <span>2023</span>
-                        <span>10 Episódios</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+2" alt="Série 2" class="card-img">
-                <div class="card-info">
-                    <h3 class="card-title">Série de Exemplo 2</h3>
-                    <div class="card-meta">
-                        <span>2022</span>
-                        <span>8 Episódios</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+3" alt="Série 3" class="card-img">
-                <div class="card-info">
-                    <h3 class="card-title">Série de Exemplo 3</h3>
-                    <div class="card-meta">
-                        <span>2023</span>
-                        <span>12 Episódios</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+4" alt="Série 4" class="card-img">
-                <div class="card-info">
-                    <h3 class="card-title">Série de Exemplo 4</h3>
-                    <div class="card-meta">
-                        <span>2021</span>
-                        <span>6 Episódios</span>
-                    </div>
-                </div>
-            </div>
+        <div id="resultsContainer" class="results-container">
+            <!-- Resultados serão carregados aqui -->
         </div>
     </div>
 
     <script>
-        // Função para lidar com a pesquisa
-        document.querySelector('button').addEventListener('click', function() {
-            const searchTerm = document.querySelector('input').value.toLowerCase();
-            const cards = document.querySelectorAll('.card');
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const resultsContainer = document.getElementById('resultsContainer');
             
-            cards.forEach(card => {
-                const title = card.querySelector('.card-title').textContent.toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
+            // Função para buscar séries na API TVmaze
+            async function searchShows(query) {
+                try {
+                    if (!query.trim()) return [];
+                    
+                    const response = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    return data.slice(0, 12); // Limitar para 12 resultados
+                } catch (error) {
+                    console.error('Erro ao buscar séries:', error);
+                    return [];
+                }
+            }
+            
+            // Função para renderizar os resultados
+            function renderResults(shows) {
+                resultsContainer.innerHTML = '';
+                
+                if (shows.length === 0) {
+                    resultsContainer.innerHTML = '<div class="error">Nenhuma série encontrada. Tente outra busca.</div>';
+                    return;
+                }
+                
+                shows.forEach(item => {
+                    const show = item.show;
+                    const card = document.createElement('div');
+                    card.className = 'show-card';
+                    
+                    // Formatar a data de lançamento
+                    const premiered = show.premiered ? new Date(show.premiered).getFullYear() : 'Desconhecido';
+                    
+                    // Calcular a avaliação média
+                    const rating = show.rating && show.rating.average ? 
+                        `<span class="rating-stars">★</span> ${show.rating.average}` : 
+                        'Sem avaliação';
+                    
+                    // Obter a imagem ou usar uma imagem padrão
+                    const image = show.image ? show.image.medium : 'https://placehold.co/300x450?text=Sem+Imagem';
+                    
+                    // Obter descrição resumida
+                    const summary = show.summary ? 
+                        show.summary.replace(/<[^>]*>/g, '').substring(0, 150) + '...' : 
+                        'Descrição não disponível';
+                    
+                    card.innerHTML = `
+                        <img src="${image}" alt="${show.name}" class="show-image" onerror="this.src='https://placehold.co/300x450?text=Sem+Imagem'">
+                        <div class="show-info">
+                            <h3 class="show-title">${show.name}</h3>
+                            <p class="show-year">${premiered}</p>
+                            <div class="show-rating">
+                                ${rating}
+                            </div>
+                            <p class="show-description">${summary}</p>
+                            <button class="watch-button" onclick="watchShow('${show.url}')">Assistir Agora</button>
+                        </div>
+                    `;
+                    
+                    resultsContainer.appendChild(card);
+                });
+            }
+            
+            // Função para assistir à série
+            function watchShow(url) {
+                // Aqui você pode implementar a lógica para redirecionar para a página de streaming
+                // Por enquanto, vamos apenas mostrar um alerta
+                alert('Redirecionando para a página de streaming...');
+                // window.open(url, '_blank'); // Descomente esta linha se quiser abrir em nova aba
+            }
+            
+            // Evento de busca quando clicar no botão
+            searchButton.addEventListener('click', async () => {
+                const query = searchInput.value;
+                if (query.trim()) {
+                    resultsContainer.innerHTML = '<div class="loading">Carregando séries...</div>';
+                    const shows = await searchShows(query);
+                    renderResults(shows);
                 }
             });
-        });
-        
-        // Função para alternar categorias
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                categoryButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
+            
+            // Evento de busca quando pressionar Enter
+            searchInput.addEventListener('keypress', async (e) => {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value;
+                    if (query.trim()) {
+                        resultsContainer.innerHTML = '<div class="loading">Carregando séries...</div>';
+                        const shows = await searchShows(query);
+                        renderResults(shows);
+                    }
+                }
             });
-        });
-        
-        // Adicionar evento de Enter na caixa de busca
-        document.querySelector('input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.querySelector('button').click();
-            }
+            
+            // Busca inicial com uma série popular
+            searchShows('Breaking Bad').then(shows => renderResults(shows));
         });
     </script>
 </body>
