@@ -72,11 +72,15 @@
             outline: none;
         }
         
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
         button {
             padding: 15px 30px;
             border: none;
             border-radius: 50px;
-            background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             color: white;
             font-size: 1.1rem;
             font-weight: bold;
@@ -86,73 +90,87 @@
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .categories {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-        
-        .category-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .category-btn:hover, .category-btn.active {
-            background: linear-gradient(to right, #ff6b6b, #4ecdc4);
-        }
-        
-        .series-grid {
+        .results-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
         
-        .series-card {
+        .show-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .series-card:hover {
+        .show-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
         
-        .series-image {
+        .show-image {
             width: 100%;
             height: 300px;
             object-fit: cover;
         }
         
-        .series-info {
+        .show-info {
             padding: 20px;
         }
         
-        .series-title {
+        .show-title {
             font-size: 1.3rem;
             margin-bottom: 10px;
+            color: #4ecdc4;
         }
         
-        .series-year {
-            opacity: 0.7;
+        .show-details {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
         
-        .series-rating {
-            color: #ffd700;
+        .show-summary {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .streaming-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
             font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .streaming-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #ff6b6b;
+            font-size: 1.2rem;
         }
         
         @keyframes fadeIn {
@@ -160,11 +178,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -177,61 +198,97 @@
         
         <div class="search-container">
             <div class="search-box">
-                <input type="text" placeholder="Buscar séries, filmes...">
-                <button>Pesquisar</button>
-            </div>
-            
-            <div class="categories">
-                <button class="category-btn active">Todas</button>
-                <button class="category-btn">Ação</button>
-                <button class="category-btn">Comédia</button>
-                <button class="category-btn">Drama</button>
-                <button class="category-btn">Ficção</button>
-                <button class="category-btn">Terror</button>
+                <input type="text" id="searchInput" placeholder="Procure por séries, filmes ou atores...">
+                <button id="searchButton">Buscar</button>
             </div>
         </div>
         
-        <div class="series-grid">
-            <div class="series-card">
-                <img src="https://via.placeholder.com/300x300/1a1a2e/ffffff?text=Série+1" alt="Série 1" class="series-image">
-                <div class="series-info">
-                    <h3 class="series-title">Série Exemplo 1</h3>
-                    <p class="series-year">2023</p>
-                    <p class="series-rating">⭐ 9.2</p>
-                </div>
-            </div>
-            
-            <div class="series-card">
-                <img src="https://via.placeholder.com/300x300/1a1a2e/ffffff?text=Série+2" alt="Série 2" class="series-image">
-                <div class="series-info">
-                    <h3 class="series-title">Série Exemplo 2</h3>
-                    <p class="series-year">2022</p>
-                    <p class="series-rating">⭐ 8.7</p>
-                </div>
-            </div>
-            
-            <div class="series-card">
-                <img src="https://via.placeholder.com/300x300/1a1a2e/ffffff?text=Série+3" alt="Série 3" class="series-image">
-                <div class="series-info">
-                    <h3 class="series-title">Série Exemplo 3</h3>
-                    <p class="series-year">2023</p>
-                    <p class="series-rating">⭐ 9.0</p>
-                </div>
-            </div>
-            
-            <div class="series-card">
-                <img src="https://via.placeholder.com/300x300/1a1a2e/ffffff?text=Série+4" alt="Série 4" class="series-image">
-                <div class="series-info">
-                    <h3 class="series-title">Série Exemplo 4</h3>
-                    <p class="series-year">2021</p>
-                    <p class="series-rating">⭐ 8.5</p>
-                </div>
-            </div>
+        <div id="resultsContainer" class="results-container">
+            <!-- Resultados serão carregados aqui -->
         </div>
-        
-        <footer>
-            <p>&copy; 2023 ZéniaTV. Todos os direitos reservados.</p>
-        </footer>
     </div>
+
+    <script>
+        // Elementos DOM
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        // Função para buscar séries na API TVmaze
+        async function searchShows(query) {
+            try {
+                const response = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+                if (!response.ok) throw new Error('Erro na busca');
+                
+                const data = await response.json();
+                return data.map(item => item.show);
+            } catch (error) {
+                console.error('Erro ao buscar séries:', error);
+                return [];
+            }
+        }
+
+        // Função para renderizar os resultados
+        function renderResults(shows) {
+            resultsContainer.innerHTML = '';
+            
+            if (shows.length === 0) {
+                resultsContainer.innerHTML = '<div class="error">Nenhum resultado encontrado</div>';
+                return;
+            }
+            
+            shows.forEach(show => {
+                const showCard = document.createElement('div');
+                showCard.className = 'show-card';
+                
+                // Tratamento de imagem
+                const imageUrl = show.image?.medium || 'https://via.placeholder.com/300x450?text=Sem+Imagem';
+                
+                showCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${show.name}" class="show-image" onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Imagem'">
+                    <div class="show-info">
+                        <h3 class="show-title">${show.name}</h3>
+                        <div class="show-details">
+                            <span>${show.premiered?.substring(0, 4) || 'Desconhecido'}</span>
+                            <span>${show.rating?.average || 'N/A'} ★</span>
+                        </div>
+                        <p class="show-summary">${show.summary?.replace(/<[^>]*>/g, '').substring(0, 150) + '...' || 'Sem descrição disponível'}</p>
+                        <button class="streaming-btn" onclick="watchStreaming('${show.url}')">Assistir Streaming</button>
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(showCard);
+            });
+        }
+
+        // Função para assistir streaming
+        function watchStreaming(url) {
+            // Redireciona para a página da série no TVmaze
+            window.open(url, '_blank');
+        }
+
+        // Evento de busca
+        searchButton.addEventListener('click', async () => {
+            const query = searchInput.value.trim();
+            if (!query) return;
+            
+            resultsContainer.innerHTML = '<div class="loading">Buscando...</div>';
+            
+            const shows = await searchShows(query);
+            renderResults(shows);
+        });
+
+        // Busca ao pressionar Enter
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+
+        // Busca inicial com exemplo
+        window.addEventListener('DOMContentLoaded', () => {
+            searchShows('game of thrones').then(shows => renderResults(shows));
+        });
+    </script>
 </body>
 </html>
