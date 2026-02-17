@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZéniaTV - Streaming de Séries</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .categories {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            transform: translateY(-2px);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .card-info {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            grid-column: 1 / -1;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ZéniaTV</h1>
+            <p class="subtitle">Streaming de Séries e Filmes</p>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar séries, filmes...">
+                <button>Pesquisar</button>
+            </div>
+            
+            <div class="categories">
+                <div class="category-btn active">Todas</div>
+                <div class="category-btn">Ação</div>
+                <div class="category-btn">Comédia</div>
+                <div class="category-btn">Drama</div>
+                <div class="category-btn">Ficção</div>
+                <div class="category-btn">Terror</div>
+            </div>
+        </div>
+        
+        <div class="content-grid">
+            <!-- Cards de conteúdo serão adicionados aqui dinamicamente -->
+            <div class="card">
+                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+1" alt="Série 1" class="card-img">
+                <div class="card-info">
+                    <h3 class="card-title">Série de Exemplo 1</h3>
+                    <div class="card-meta">
+                        <span>2023</span>
+                        <span>10 Episódios</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+2" alt="Série 2" class="card-img">
+                <div class="card-info">
+                    <h3 class="card-title">Série de Exemplo 2</h3>
+                    <div class="card-meta">
+                        <span>2022</span>
+                        <span>8 Episódios</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+3" alt="Série 3" class="card-img">
+                <div class="card-info">
+                    <h3 class="card-title">Série de Exemplo 3</h3>
+                    <div class="card-meta">
+                        <span>2023</span>
+                        <span>12 Episódios</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <img src="https://placehold.co/300x400/1a1a2e/4ecdc4?text=Série+4" alt="Série 4" class="card-img">
+                <div class="card-info">
+                    <h3 class="card-title">Série de Exemplo 4</h3>
+                    <div class="card-meta">
+                        <span>2021</span>
+                        <span>6 Episódios</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para lidar com a pesquisa
+        document.querySelector('button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('input').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        
+        // Função para alternar categorias
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Adicionar evento de Enter na caixa de busca
+        document.querySelector('input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('button').click();
+            }
+        });
+    </script>
+</body>
+</html>
